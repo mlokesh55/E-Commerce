@@ -1,6 +1,7 @@
 ﻿using e_comm.Models;
 using e_comm.Models.Orders;
 using e_comm.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace e_comm.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="user")]
         public async Task<IActionResult> AddCartItem(CartItemDto cartItemDto)
         {
             try
@@ -40,6 +42,7 @@ namespace e_comm.Controllers
         }
 
         [HttpGet("cart/{cartId}")]
+        [Authorize(Roles = "user")]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItemsByCartId(int cartId)
         {
             try
@@ -54,6 +57,7 @@ namespace e_comm.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "user")]
         public async Task<ActionResult<CartItem>> GetCartItem(int id)
         {
             try
@@ -72,6 +76,7 @@ namespace e_comm.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> UpdateCartItem(int id, CartItem cartItem)
         {
             if (id != cartItem.CartItemId)
@@ -91,6 +96,7 @@ namespace e_comm.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> DeleteCartItem(int id)
         {
             try
@@ -105,6 +111,7 @@ namespace e_comm.Controllers
         }
 
         [HttpPost("checkout/{cartId}")]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> Checkout(int cartId)
         {
             try
