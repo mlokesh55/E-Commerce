@@ -1,5 +1,6 @@
 ﻿using e_comm.Models;
 using E_comm.Models;
+using Ecommerce.Aspects;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce.Repository
@@ -19,12 +20,20 @@ namespace E_Commerce.Repository
             db.SaveChanges();
         }
 
+        //public ShoppingCart GetCartByUserId(int userId)
+        //{
+        //    return db.ShoppingCartTable.Include(c => c.User).FirstOrDefault(c => c.UserId == userId);
+        //}
+
         public ShoppingCart GetCartByUserId(int userId)
         {
-            return db.ShoppingCartTable.Include(c => c.User).FirstOrDefault(c => c.UserId == userId);
+            var cart = db.ShoppingCartTable.Include(c => c.User).FirstOrDefault(c => c.UserId == userId);
+            if (cart == null)
+            {
+                throw new CartNotFoundException("Cart not found.");
+            }
+            return cart;
         }
-
-        
 
         public void UpdateCartStatus(int cartId)
         {

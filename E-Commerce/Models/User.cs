@@ -29,7 +29,6 @@ namespace e_comm.Models
         public string Role { get; set; }
 
         [JsonIgnore]
-
         public ShoppingCart? ShoppingCart { get; set; }
     }
 }

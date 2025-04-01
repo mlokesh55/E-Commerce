@@ -2,6 +2,10 @@
 using E_comm.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Ecommerce.Aspects;
+using E_Commerce.Aspects;
+using Ecommerce.Exceptions;
+using E_Commerce.Exceptions;
 
 namespace e_comm.Aspects
 {
@@ -27,6 +31,21 @@ namespace e_comm.Aspects
             {
                 var result = new StatusCodeResult(500);
                 context.Result = result;
+            }
+
+
+            //cart exceptions
+            if (context.Exception is CartNotFoundException || context.Exception is CartItemNotFoundException)
+            {
+                context.Result = new NotFoundObjectResult(context.Exception.Message);
+            }
+            else if (context.Exception is CartAlreadyExistsException || context.Exception is CartItemAlreadyExistsException)
+            {
+                context.Result = new ConflictObjectResult(context.Exception.Message);
+            }
+            else
+            {
+                context.Result = new StatusCodeResult(500);
             }
 
         }

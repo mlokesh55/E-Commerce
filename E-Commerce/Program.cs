@@ -60,6 +60,11 @@ builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
 builder.Services.AddScoped<ExceptionHandlerAttribute>();
 
+//builder exception
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ExceptionHandlerAttribute>();
+});
 
 //Order Services start
 

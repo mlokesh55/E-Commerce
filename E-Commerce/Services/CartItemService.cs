@@ -54,7 +54,7 @@ namespace e_comm.Services
 
             if (cartItem == null)
             {
-                throw new Exception("Cart item not found.");
+                throw new Exception("Cart Item not found.");
             }
 
             cartItem.Status = newStatus;

@@ -9,6 +9,7 @@ namespace e_comm.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class CartItemController : ControllerBase
     {
         private readonly ICartItemService _cartItemService;
@@ -19,7 +20,7 @@ namespace e_comm.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="user")]
+        //[Authorize(Roles ="user")]
         public async Task<IActionResult> AddCartItem(CartItemDto cartItemDto)
         {
             try
@@ -42,22 +43,28 @@ namespace e_comm.Controllers
         }
 
         [HttpGet("cart/{cartId}")]
-        [Authorize(Roles = "user")]
+        //[Authorize(Roles = "user")]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItemsByCartId(int cartId)
         {
             try
             {
                 var items = await _cartItemService.GetCartItemsByCartIdAsync(cartId);
+
+                if (items == null || !items.Any())
+                {
+                    return NotFound("Cart not found or is empty.");
+                }
+
                 return Ok(items);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return StatusCode(500, "Internal server error");
             }
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "user")]
+        //[Authorize(Roles = "user")]
         public async Task<ActionResult<CartItem>> GetCartItem(int id)
         {
             try
@@ -65,7 +72,7 @@ namespace e_comm.Controllers
                 var cartItem = await _cartItemService.GetCartItemByIdAsync(id);
                 if (cartItem == null)
                 {
-                    return NotFound();
+                    return NotFound("CartItemId item not found.");
                 }
                 return Ok(cartItem);
             }
@@ -76,7 +83,7 @@ namespace e_comm.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "user")]
+        //[Authorize(Roles = "user")]
         public async Task<IActionResult> UpdateCartItem(int id, CartItem cartItem)
         {
             if (id != cartItem.CartItemId)
@@ -96,7 +103,7 @@ namespace e_comm.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "user")]
+        //[Authorize(Roles = "user")]
         public async Task<IActionResult> DeleteCartItem(int id)
         {
             try
@@ -111,7 +118,7 @@ namespace e_comm.Controllers
         }
 
         [HttpPost("checkout/{cartId}")]
-        [Authorize(Roles = "user")]
+        //[Authorize(Roles = "user")]
         public async Task<IActionResult> Checkout(int cartId)
         {
             try
@@ -131,29 +138,6 @@ namespace e_comm.Controllers
             }
         }
 
-        //total price
-        //[HttpGet("cart/{cartId}/total")]
-        //public async Task<ActionResult<decimal>> GetTotalPriceByCartId(int cartId)
-        //{
-        //    try
-        //    {
-        //        var cartItems = await _cartItemService.GetCartItemsByCartIdAsync(cartId);
-
-        //        if (cartItems == null || !cartItems.Any())
-        //        {
-        //            return NotFound(new { Message = "Cart not found or is empty." });
-        //        }
-
-        //        var totalPrice = await _cartItemService.GetTotalPriceByCartIdAsync(cartId);
-        //        return Ok(new { TotalPrice = totalPrice });
-
-        //    }
-        //    catch (Exception)
-        //    {
-        //        // Log the exception
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
+ 
     }
 }

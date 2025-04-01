@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace e_comm.Models
 {
@@ -13,6 +14,7 @@ namespace e_comm.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
+        [JsonIgnore]
         public required User User { get; set; }
 
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();

@@ -21,6 +21,7 @@ namespace e_comm.Models
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
+        [JsonIgnore]
         public Product Product { get; set; }
 
         [Required]
